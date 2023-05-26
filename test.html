@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slider Example</title>
+    <style>
+        .slider-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .slides-wrapper {
+            display: flex;
+            transition: transform 0.3s ease-in-out;
+            width: 100%;
+        }
+
+        .slides-wrapper img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            /* تطبيق الحواف المستديرة للصور */
+        }
+
+        .slide-indicators {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .slide-indicators .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: gray;
+            margin: 0 6px;
+            cursor: pointer;
+        }
+
+        .slide-indicators .indicator.active {
+            background-color: #0077c0;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="hero">
+        <div class="slider-container">
+            <div class="slides-wrapper">
+                <img decoding="async" src="./images/2.jpg" alt="" />
+                <img decoding="async" src="./images/3.jpg" alt="" />
+                <img decoding="async" src="./images/4.png" alt="" />
+                <img decoding="async" src="./images/5.png" alt="" />
+                <img decoding="async" src="./images/6.png" alt="" />
+            </div>
+            <div class="slide-indicators"></div>
+        </div>
+    </section>
+
+    <script>
+        const slideContainer = document.querySelector('.slider-container');
+        const slidesWrapper = slideContainer.querySelector('.slides-wrapper');
+        const slideIndicators = slideContainer.querySelector('.slide-indicators');
+
+        const slides = slidesWrapper.getElementsByTagName('img');
+        const totalSlides = slides.length;
+        let currentSlide = 0;
+        let interval;
+
+        function createIndicators() {
+            for (let i = 0; i < totalSlides; i++) {
+                const indicator = document.createElement('span');
+                indicator.classList.add('indicator');
+                indicator.setAttribute('data-slide', i);
+                indicator.addEventListener('click', navigateToSlide);
+                slideIndicators.appendChild(indicator);
+            }
+            updateIndicators();
+        }
+
+        function updateIndicators() {
+            const indicators = slideIndicators.getElementsByClassName('indicator');
+            for (let i = 0; i < indicators.length; i++) {
+                indicators[i].classList.remove('active');
+            }
+            indicators[currentSlide].classList.add('active');
+        }
+
+        function navigateToSlide(event) {
+            clearInterval(interval);
+            const targetSlide = Number(event.target.getAttribute('data-slide'));
+            currentSlide = targetSlide;
+            slidesWrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
+            updateIndicators();
+        }
+
+        function startAutoSlide() {
+            interval = setInterval(() => {
+                currentSlide = (currentSlide + 1) % totalSlides;
+                slidesWrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
+                updateIndicators();
+            }, 3000);
+        }
+
+        createIndicators();
+        startAutoSlide();
+    </script>
+</body>
+
+</html>
+<!-- 
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .column {
+            float: left;
+            width: 33.33%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .section-container {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            color: #333;
+        }
+
+        .main-section {
+            margin-bottom: 20px;
+        }
+
+        .main-title {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .sub-section {
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .sub-title {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+    </style>
+    <title>تصميم الأعمدة المتجاورة</title>
+</head>
+
+<body>
+    <div class="column">
+        <section class="section-container">
+            <div class="section-header">
+                <h1 class="section-title">العلوم الطبية الأساسية</h1>
+            </div>
+            <div class="main-section">
+                <h2 class="main-title">العلوم الطبية الأساسية</h2>
+                <div class="sub-section">
+                    <p class="sub-title">قسم التشريح</p>
+                </div>
+                <div class="sub-section">
+                    <p class="sub-title">قسم الفيزياء الحيوية</p>
+                </div>
+                <div class="sub-section">
+                    <p class="sub-title">قسم الإحصاء الحيوي</p>
+                </div>
+                <div class="sub-section">
+                    <p class="sub-title">قسم علم وظائف الأعضاء</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="column">
+        <section class="section-container">
+            <div class="section-header">
+                <h1 class="section-title">العلوم الطبية الداخلية (الباطنية)</h1>
+            </div>
+            <div class="main-section">
+                <h2 class="main-title">العلوم الطبية الداخلية (الباطنية)</h2>
+                <div class="sub-section">
+                    <p class="sub-title">قسم طب الطوارئ</p>
+                </div>
+                <div class="sub-section">
+                    <p class="sub-title">قسم طب الأسرة</p>
+                </div>
+                <div class="sub-section">
+                    <p class="sub-title">قسم صحة الطفل والأمراض</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="column">
+        <section class="section-container">
+            <div class="section-header">
+                <h1 class="section-title">العلوم الطبية الجراحية</h1>
+            </div>
+            <div class="main-section">
+                <h2 class="main-title">العلوم الطبية الجراحية</h2>
+                <div class="sub-section">
+                    <p class="sub-title">قسم جراحة الفم والوجه والفكين</p>
+                </div>
+                <div class="sub-section">
+                    <p class="sub-title">قسم التخدير والإنعاش</p>
+                </div>
+                <div class="sub-section">
+                    <p class="sub-title">قسم جراحة المخ والأعصاب</p>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+
+</html> -->
